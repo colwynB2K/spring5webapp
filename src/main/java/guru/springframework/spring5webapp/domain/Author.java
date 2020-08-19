@@ -21,18 +21,17 @@ public class Author {
 
     @ManyToMany(
             mappedBy = "authors",
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
+     //       cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
             fetch = FetchType.LAZY
     )
-    private Set<Book> books;
+    private Set<Book> books = new HashSet<>();
 
     public Author() {
     }
 
-    public Author(String firstName, String lastName) { // }, Set<Book> books) {
+    public Author(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-        //this.books = books;
     }
 
     public Long getId() {
@@ -59,7 +58,7 @@ public class Author {
         this.lastName = lastName;
     }
 
-    public Set<Book> getBookList() {
+    public Set<Book> getBooks() {
         return books;
     }
 
@@ -69,14 +68,8 @@ public class Author {
 
     // Add convenience method for bidirectional relationship
     public void addBook(Book book) {
-
-        // In case this is the first time a course is added to the instructor
-        if (books == null) {
-            books = new HashSet<>();
-        }
-
         // Create the bi-directional link
-        book.setAuthor(this);	// Make sure the link from the book back to the author is also set in the book Java object
+        book.addAuthor(this);	// Make sure the link from the book back to the author is also set in the book Java object
         books.add(book);
     }
 
